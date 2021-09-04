@@ -84,8 +84,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
 
     //dxUtils
-    //todo not imported?!
-    implementation 'com.github.or-dvir:DxUtils-lib:1.37'
+    //todo why doesnt this work?!
+//    implementation 'com.github.or-dvir:DxUtils-lib:1.37'
+
+    //navigation
+    def nav_version = "2.3.5"
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
 
     //leak canary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
