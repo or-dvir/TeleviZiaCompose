@@ -13,6 +13,10 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app)
 {
     private val mainDispatcher = Dispatchers.Main
 
+    //todo
+    // hold and update email state
+    // hold and update password state
+
     /**
      * @return String error message, or `null` if success
      */
