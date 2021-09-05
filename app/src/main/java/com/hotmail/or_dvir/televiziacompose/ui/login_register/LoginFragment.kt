@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.hotmail.or_dvir.televiziacompose.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment()
 {
+    private val viewModel: LoginViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,9 +27,8 @@ class LoginFragment : Fragment()
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            setContent {
-                Text(text = "login fragment")
-            }
+            setContent { LoginScreen() }
         }
     }
 }
+
