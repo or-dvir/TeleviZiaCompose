@@ -3,7 +3,9 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,51 +43,12 @@ fun LoginScreen()
 }
 
 @Composable
-fun EmailField(
-    state: TextFieldState,
-    modifier: Modifier = Modifier,
-    onTextChanged: (String) -> Unit
-)
-{
-    val showError = state.hasError()
-
-    Column {
-        //todo
-        // add ime action "next" to move to password field
-        // handle error
-        //      invalid email
-        OutlinedTextField(
-            value = state.text,
-            modifier = modifier,
-            isError = showError,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            onValueChange = { onTextChanged(it) },
-            label = { Text(text = stringResource(id = R.string.hint_email)) }
-        )
-
-        if (showError)
-        {
-            Text(
-                modifier = Modifier.offset(16.dp, 0.dp),
-                style = MaterialTheme.typography.caption,
-                text = state.error,
-                color = MaterialTheme.colors.error
-            )
-        }
-    }
-}
-
-@Composable
 fun PasswordField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     onTextChanged: (String) -> Unit
 )
 {
-    
-
-    val showError = state.hasError()
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     val passwordTransformation: VisualTransformation
@@ -104,17 +67,13 @@ fun PasswordField(
         passwordTransformation = PasswordVisualTransformation()
     }
 
-    //todo
-    // add ime action next to go to the "login" button
-    OutlinedTextField(
-        visualTransformation = passwordTransformation,
-        value = state.text,
-        isError = showError,
-        modifier = modifier,
-        singleLine = true,
+    EmailPasswordTextField(
+        state = state,
+        hint = R.string.hint_password,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        onValueChange = { onTextChanged(it) },
-        label = { Text(text = stringResource(id = R.string.hint_password)) },
+        visualTransformation = passwordTransformation,
+        modifier = modifier,
+        onTextChanged = onTextChanged,
         trailingIcon = {
             IconButton(
                 onClick = { isPasswordVisible = !isPasswordVisible }
@@ -126,15 +85,43 @@ fun PasswordField(
             }
         }
     )
+}
 
-    if (showError)
-    {
-        Text(
-            modifier = Modifier.offset(16.dp, 0.dp),
-            style = MaterialTheme.typography.caption,
-            text = state.error,
-            color = MaterialTheme.colors.error
+@Composable
+fun EmailPasswordTextField(
+    state: TextFieldState,
+    @StringRes hint: Int,
+    keyboardOptions: KeyboardOptions,
+    visualTransformation: VisualTransformation,
+    modifier: Modifier,
+    trailingIcon: @Composable (() -> Unit)?,
+    onTextChanged: (String) -> Unit
+)
+{
+    val showError = state.hasError()
+
+    Column {
+        OutlinedTextField(
+            visualTransformation = visualTransformation,
+            value = state.text,
+            isError = showError,
+            modifier = modifier,
+            singleLine = true,
+            onValueChange = { onTextChanged(it) },
+            label = { Text(text = stringResource(id = hint)) },
+            keyboardOptions = keyboardOptions,
+            trailingIcon = trailingIcon
         )
+
+        if (showError)
+        {
+            Text(
+                modifier = Modifier.offset(16.dp, 0.dp),
+                style = MaterialTheme.typography.caption,
+                text = state.error,
+                color = MaterialTheme.colors.error
+            )
+        }
     }
 }
 
@@ -148,33 +135,51 @@ fun UserInput()
     ) {
 
         val emailState = remember { TextFieldState() }
-        var password by remember { mutableStateOf("") }
-
+        val passwordState = remember { TextFieldState() }
         val maxWidthModifier = Modifier.fillMaxWidth()
 
-        EmailField(
-            emailState,
+        //email field
+        EmailPasswordTextField(
+            state = emailState,
+            hint = R.string.hint_email,
+            keyboardOptions = KeyboardOptions.Default,
+            visualTransformation = VisualTransformation.None,
             modifier = maxWidthModifier,
+            trailingIcon = null,
+            onTextChanged = {
+                emailState.apply {
+                    text = it
+                    //todo fix me. just for show
+                    error = if (text.length > 3)
+                    {
+                        "max 3 characters"
+                    } else
+                    {
+                        ""
+                    }
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        PasswordField(
+            passwordState,
+            maxWidthModifier
         ) {
-            emailState.apply {
+            passwordState.apply {
                 text = it
-                error = if (text.length > 3)
+                //todo fix me. just for show
+                error = if (text.length < 3)
                 {
-                    "max 3 characters"
+                    "min 3 characters"
                 } else
                 {
                     ""
                 }
             }
         }
-        PasswordField(
-            modifier = maxWidthModifier,
-            text = password
-        ) {
-            password = it
-        }
 
-        //todo password
         //todo login button
         //todo register button
     }
@@ -186,14 +191,5 @@ fun UserInput()
 fun LoginScreenPreview()
 {
     LoginScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EmailErrorPreview()
-{
-    EmailField(
-        state = TextFieldState(error = "some error")
-    ) { /*ignore*/ }
 }
 //endregion
