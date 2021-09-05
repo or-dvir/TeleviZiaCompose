@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TeleviZiaCompose</string>
+    <string name="error_invalidEmail">Invalid email address</string>
+    <string name="hint_email">Email</string>
 </resources>
