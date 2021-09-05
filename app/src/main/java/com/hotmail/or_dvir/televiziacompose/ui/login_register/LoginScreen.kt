@@ -78,14 +78,14 @@ fun EmailField(
 
 @Composable
 fun PasswordField(
+    state: TextFieldState,
     modifier: Modifier = Modifier,
-    text: String = "",
     onTextChanged: (String) -> Unit
 )
 {
-    //todo add error in case the field is empty
-    // (in caller - should create state object? shared with email?)
+    
 
+    val showError = state.hasError()
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     val passwordTransformation: VisualTransformation
@@ -108,7 +108,8 @@ fun PasswordField(
     // add ime action next to go to the "login" button
     OutlinedTextField(
         visualTransformation = passwordTransformation,
-        value = text,
+        value = state.text,
+        isError = showError,
         modifier = modifier,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -125,6 +126,16 @@ fun PasswordField(
             }
         }
     )
+
+    if (showError)
+    {
+        Text(
+            modifier = Modifier.offset(16.dp, 0.dp),
+            style = MaterialTheme.typography.caption,
+            text = state.error,
+            color = MaterialTheme.colors.error
+        )
+    }
 }
 
 @Composable
