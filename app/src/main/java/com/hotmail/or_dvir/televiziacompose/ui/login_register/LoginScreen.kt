@@ -3,9 +3,7 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -44,15 +42,12 @@ fun LoginScreen()
 
 @Composable
 fun EmailField(
+    state: TextFieldState,
     modifier: Modifier = Modifier,
-    text: String = "",
-    error: String = "",
     onTextChanged: (String) -> Unit
 )
 {
-    //todo make a general class for all TextFields
-    // should hold text, error status/message
-    val showError = error.isNotBlank()
+    val showError = state.hasError()
 
     Column {
         //todo
@@ -60,7 +55,7 @@ fun EmailField(
         // handle error
         //      invalid email
         OutlinedTextField(
-            value = text,
+            value = state.text,
             modifier = modifier,
             isError = showError,
             singleLine = true,
@@ -74,7 +69,7 @@ fun EmailField(
             Text(
                 modifier = Modifier.offset(16.dp, 0.dp),
                 style = MaterialTheme.typography.caption,
-                text = error,
+                text = state.error,
                 color = MaterialTheme.colors.error
             )
         }
@@ -140,24 +135,25 @@ fun UserInput()
     Column(
         modifier = Modifier.padding(16.dp),
     ) {
-        var email by remember { mutableStateOf("") }
-        var emailError by remember { mutableStateOf("") }
+
+        val emailState = remember { TextFieldState() }
         var password by remember { mutableStateOf("") }
 
         val maxWidthModifier = Modifier.fillMaxWidth()
 
         EmailField(
+            emailState,
             modifier = maxWidthModifier,
-            text = email,
-            error = emailError
         ) {
-            email = it
-            emailError = if (email.length > 3)
-            {
-                "max 3 characters"
-            } else
-            {
-                ""
+            emailState.apply {
+                text = it
+                error = if (text.length > 3)
+                {
+                    "max 3 characters"
+                } else
+                {
+                    ""
+                }
             }
         }
         PasswordField(
@@ -185,6 +181,8 @@ fun LoginScreenPreview()
 @Composable
 fun EmailErrorPreview()
 {
-    EmailField(error = "some error") {}
+    EmailField(
+        state = TextFieldState(error = "some error")
+    ) { /*ignore*/ }
 }
 //endregion
