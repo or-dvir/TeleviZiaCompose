@@ -3,16 +3,16 @@ package com.hotmail.or_dvir.televiziacompose.repositories
 import androidx.lifecycle.LiveData
 import com.hotmail.or_dvir.database.MovieEntity
 import com.hotmail.or_dvir.database.MoviesDatabase
-import com.hotmail.or_dvir.televiziacompose.converters.toMovie
-import com.hotmail.or_dvir.televiziacompose.converters.toMovieEntity
-import com.hotmail.or_dvir.televiziacompose.converters.toMovies
 import com.hotmail.or_dvir.televiziacompose.models.Movie
+import com.hotmail.or_dvir.televiziacompose.models.toMovie
+import com.hotmail.or_dvir.televiziacompose.models.toMovieEntity
+import com.hotmail.or_dvir.televiziacompose.models.toMovies
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
-class MoviesRepository_Imp : MoviesRepository
+class MoviesRepositoryImpl : MoviesRepository
 {
     private val ioDispatcher = Dispatchers.IO
 
