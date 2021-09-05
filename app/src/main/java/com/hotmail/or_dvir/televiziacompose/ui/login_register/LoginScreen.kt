@@ -3,7 +3,9 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -108,8 +110,6 @@ fun PasswordField(
     }
 
     //todo
-    // hide characters by default
-    // add icon to show/hide characters
     // add ime action next to go to the "login" button
     OutlinedTextField(
         visualTransformation = passwordTransformation,
@@ -160,7 +160,6 @@ fun UserInput()
                 ""
             }
         }
-
         PasswordField(
             modifier = maxWidthModifier,
             text = password
