@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 open class TextFieldState(
-    text: String,
-    error: String,
+    text: String = "",
+    error: String = "",
 )
 {
     var text by mutableStateOf(text)
