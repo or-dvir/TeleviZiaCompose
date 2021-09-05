@@ -13,5 +13,5 @@ open class TextFieldState(
     var error by mutableStateOf(error)
 
     fun hasText() = text.isBlank()
-    fun hasError() = error.isBlank()
+    fun hasError() = error.isNotBlank()
 }
