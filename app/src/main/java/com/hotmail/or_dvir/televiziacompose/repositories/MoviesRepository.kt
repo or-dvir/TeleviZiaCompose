@@ -8,6 +8,7 @@ import java.util.UUID
 interface MoviesRepository
 {
     suspend fun getAllMovies(): List<Movie>
+
     //returning a database entity here because the database is not familiar with app models...
     //so the conversion will have to be made in the view model in this case.
     suspend fun getFavoriteMovies(): LiveData<List<MovieEntity>>
@@ -18,6 +19,7 @@ interface MoviesRepository
      * @return Boolean `true` if successful, `false` otherwise
      */
     suspend fun addFavorite(movie: Movie): Boolean
+
     /**
      * @return Boolean `true` if successful, `false` otherwise
      */

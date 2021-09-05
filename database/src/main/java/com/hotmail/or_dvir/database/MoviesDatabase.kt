@@ -17,7 +17,8 @@ object MoviesDatabase
     private val mutableFavoriteMovies = MutableLiveData<List<MovieEntity>>()
     val favoriteMovies: LiveData<List<MovieEntity>> = mutableFavoriteMovies
 
-    fun addFavorite(movie: MovieEntity): Boolean {
+    fun addFavorite(movie: MovieEntity): Boolean
+    {
         return mutableFavoriteMovies.let {
             //imitate chance of failure
             if (Random.nextInt(100) >= 80)
@@ -31,7 +32,8 @@ object MoviesDatabase
         }
     }
 
-    fun removeFavorite(movie: MovieEntity): Boolean {
+    fun removeFavorite(movie: MovieEntity): Boolean
+    {
         return mutableFavoriteMovies.let {
             //imitate chance of failure
             if (Random.nextInt(100) >= 80)
