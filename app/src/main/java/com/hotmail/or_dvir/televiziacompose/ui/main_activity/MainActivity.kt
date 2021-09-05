@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.televiziacompose.ui
+package com.hotmail.or_dvir.televiziacompose.ui.main_activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
