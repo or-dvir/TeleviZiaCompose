@@ -16,6 +16,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,12 +32,12 @@ import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 
 @Composable
-fun LoginScreen()
+fun LoginScreen(viewModel: LoginViewModel)
 {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
         //todo logo (and app name???)
-        UserInput()
+        UserInput(viewModel)
     }
 
     //todo add ALL composables here
@@ -49,6 +50,7 @@ fun PasswordField(
     onTextChanged: (String) -> Unit
 )
 {
+    //todo this will not keep for configuration changes
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     val passwordTransformation: VisualTransformation
@@ -62,6 +64,7 @@ fun PasswordField(
         passwordTransformation = VisualTransformation.None
     } else
     {
+        //password is hidden
         passwordIconId = R.drawable.ic_visibility_on
         passwordContentDescriptionId = R.string.contentDescription_showPassword
         passwordTransformation = PasswordVisualTransformation()
@@ -126,7 +129,7 @@ fun EmailPasswordTextField(
 }
 
 @Composable
-fun UserInput()
+fun UserInput(viewModel: LoginViewModel)
 {
     //todo do i need to remember the focused field?
 
@@ -134,8 +137,10 @@ fun UserInput()
         modifier = Modifier.padding(16.dp),
     ) {
 
-        val emailState = remember { TextFieldState() }
-        val passwordState = remember { TextFieldState() }
+        //todo isn't it bad if i put an initial value here AND in the view model?
+        val emailState by viewModel.emailState.observeAsState(TextFieldState())
+        val passwordState by viewModel.passwordState.observeAsState(TextFieldState())
+
         val maxWidthModifier = Modifier.fillMaxWidth()
 
         //email field
@@ -146,39 +151,15 @@ fun UserInput()
             visualTransformation = VisualTransformation.None,
             modifier = maxWidthModifier,
             trailingIcon = null,
-            onTextChanged = {
-                emailState.apply {
-                    text = it
-                    //todo fix me. just for show
-                    error = if (text.length > 3)
-                    {
-                        "max 3 characters"
-                    } else
-                    {
-                        ""
-                    }
-                }
-            }
+            onTextChanged = { viewModel.onEmailInputChanged(it) }
         )
 
         Spacer(modifier = Modifier.height(5.dp))
 
         PasswordField(
-            passwordState,
-            maxWidthModifier
-        ) {
-            passwordState.apply {
-                text = it
-                //todo fix me. just for show
-                error = if (text.length < 3)
-                {
-                    "min 3 characters"
-                } else
-                {
-                    ""
-                }
-            }
-        }
+            state = passwordState,
+            modifier = maxWidthModifier
+        ) { viewModel.onPasswordInputChanged(it) }
 
         //todo login button
         //todo register button
@@ -190,6 +171,7 @@ fun UserInput()
 @Composable
 fun LoginScreenPreview()
 {
-    LoginScreen()
+    //todo how do i pass the view model here?
+//    LoginScreen()
 }
 //endregion

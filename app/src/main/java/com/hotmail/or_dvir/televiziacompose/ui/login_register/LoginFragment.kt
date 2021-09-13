@@ -27,7 +27,7 @@ class LoginFragment : Fragment()
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            setContent { LoginScreen() }
+            setContent { LoginScreen(viewModel) }
         }
     }
 }
