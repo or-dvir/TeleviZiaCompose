@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 
-class LoginViewModel(private val app: Application) : AndroidViewModel(app)
+class LoginViewModel(app: Application) : AndroidViewModel(app)
 {
     private val mainDispatcher = Dispatchers.Main
 
