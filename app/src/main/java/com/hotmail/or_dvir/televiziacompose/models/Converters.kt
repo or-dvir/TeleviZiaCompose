@@ -1,6 +1,6 @@
 package com.hotmail.or_dvir.televiziacompose.models
 
-import com.hotmail.or_dvir.database.MovieEntity
+import com.hotmail.or_dvir.database.movies.MovieEntity
 
 fun Movie.toMovieEntity(): MovieEntity = MovieEntity(id, title, plotSummary)
 fun List<Movie>.toMovieEntities(): List<MovieEntity> =

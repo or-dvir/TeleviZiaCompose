@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.database
+package com.hotmail.or_dvir.database.movies
 
 import java.util.UUID
 

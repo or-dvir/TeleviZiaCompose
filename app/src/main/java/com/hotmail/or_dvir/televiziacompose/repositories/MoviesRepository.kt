@@ -1,7 +1,7 @@
 package com.hotmail.or_dvir.televiziacompose.repositories
 
 import androidx.lifecycle.LiveData
-import com.hotmail.or_dvir.database.MovieEntity
+import com.hotmail.or_dvir.database.movies.MovieEntity
 import com.hotmail.or_dvir.televiziacompose.models.Movie
 import java.util.UUID
 

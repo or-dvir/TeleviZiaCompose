@@ -1,8 +1,8 @@
 package com.hotmail.or_dvir.televiziacompose.repositories
 
 import androidx.lifecycle.LiveData
-import com.hotmail.or_dvir.database.MovieEntity
-import com.hotmail.or_dvir.database.MoviesDatabase
+import com.hotmail.or_dvir.database.movies.MovieEntity
+import com.hotmail.or_dvir.database.movies.MoviesDataSource
 import com.hotmail.or_dvir.televiziacompose.models.Movie
 import com.hotmail.or_dvir.televiziacompose.models.toMovie
 import com.hotmail.or_dvir.televiziacompose.models.toMovieEntity
@@ -25,7 +25,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.allMovies.toMovies()
+            MoviesDataSource.allMovies.toMovies()
         }
     }
 
@@ -33,7 +33,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.favoriteMovies
+            MoviesDataSource.favoriteMovies
         }
     }
 
@@ -41,7 +41,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.allMovies.filter {
+            MoviesDataSource.allMovies.filter {
                 it.title.contains(searchQuery, true)
             }.toMovies()
         }
@@ -51,7 +51,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.allMovies.find {
+            MoviesDataSource.allMovies.find {
                 it.id == movieId
             }?.toMovie()
         }
@@ -61,7 +61,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.addFavorite(movie.toMovieEntity())
+            MoviesDataSource.addFavorite(movie.toMovieEntity())
         }
     }
 
@@ -69,7 +69,7 @@ class MoviesRepositoryImpl : MoviesRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            MoviesDatabase.removeFavorite(movie.toMovieEntity())
+            MoviesDataSource.removeFavorite(movie.toMovieEntity())
         }
     }
 }
