@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
+import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
 import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 
 @Composable
@@ -45,7 +46,7 @@ fun LoginScreen(viewModel: LoginViewModel)
 
 @Composable
 fun PasswordField(
-    state: TextFieldState,
+    state: LoginUiState,
     modifier: Modifier = Modifier,
     onTextChanged: (String) -> Unit
 )
@@ -71,7 +72,8 @@ fun PasswordField(
     }
 
     EmailPasswordTextField(
-        state = state,
+        text = state.passwordText,
+        error = state.passwordError,
         hint = R.string.hint_password,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = passwordTransformation,
@@ -92,7 +94,8 @@ fun PasswordField(
 
 @Composable
 fun EmailPasswordTextField(
-    state: TextFieldState,
+    text: String,
+    error: String,
     @StringRes hint: Int,
     keyboardOptions: KeyboardOptions,
     visualTransformation: VisualTransformation,
@@ -101,12 +104,12 @@ fun EmailPasswordTextField(
     onTextChanged: (String) -> Unit
 )
 {
-    val showError = state.hasError()
+    val showError = error.isNotBlank()
 
     Column {
         OutlinedTextField(
             visualTransformation = visualTransformation,
-            value = state.text,
+            value = text,
             isError = showError,
             modifier = modifier,
             singleLine = true,
@@ -121,7 +124,7 @@ fun EmailPasswordTextField(
             Text(
                 modifier = Modifier.offset(16.dp, 0.dp),
                 style = MaterialTheme.typography.caption,
-                text = state.error,
+                text = error,
                 color = MaterialTheme.colors.error
             )
         }
@@ -138,14 +141,13 @@ fun UserInput(viewModel: LoginViewModel)
     ) {
 
         //todo isn't it bad if i put an initial value here AND in the view model?
-        val emailState by viewModel.emailState.observeAsState(TextFieldState())
-        val passwordState by viewModel.passwordState.observeAsState(TextFieldState())
-
+        val uiState by viewModel.uiState.observeAsState(LoginUiState())
         val maxWidthModifier = Modifier.fillMaxWidth()
 
         //email field
         EmailPasswordTextField(
-            state = emailState,
+            text = uiState.emailText,
+            error = uiState.emailError,
             hint = R.string.hint_email,
             keyboardOptions = KeyboardOptions.Default,
             visualTransformation = VisualTransformation.None,
@@ -157,7 +159,7 @@ fun UserInput(viewModel: LoginViewModel)
         Spacer(modifier = Modifier.height(5.dp))
 
         PasswordField(
-            state = passwordState,
+            state = uiState,
             modifier = maxWidthModifier
         ) { viewModel.onPasswordInputChanged(it) }
 
