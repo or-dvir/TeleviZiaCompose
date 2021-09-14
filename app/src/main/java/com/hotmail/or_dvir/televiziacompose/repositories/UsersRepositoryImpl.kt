@@ -19,7 +19,7 @@ class UsersRepositoryImpl : UsersRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            UsersDataSource.login(email, password)
+            UsersDataSource.login(email.trim(), password)
         }
     }
 

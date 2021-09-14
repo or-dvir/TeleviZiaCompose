@@ -74,7 +74,7 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
     private fun validateEmail(): Boolean
     {
         _uiState.value!!.apply {
-            val isEmailValid = PatternsCompat.EMAIL_ADDRESS.matcher(emailText).matches()
+            val isEmailValid = PatternsCompat.EMAIL_ADDRESS.matcher(emailText.trim()).matches()
             if (!isEmailValid)
             {
                 updateUiState(
