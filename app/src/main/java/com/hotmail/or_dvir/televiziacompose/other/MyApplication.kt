@@ -3,6 +3,8 @@ package com.hotmail.or_dvir.televiziacompose.other
 import android.app.Application
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepository
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepositoryImpl
+import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepository
+import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepositoryImpl
 import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +18,8 @@ class MyApplication : Application()
 {
     private val appModule = module {
         viewModel { LoginViewModel(androidApplication()) }
-        factory<MoviesRepository> { MoviesRepositoryImpl() }
+        single<MoviesRepository> { MoviesRepositoryImpl() }
+        single<UsersRepository> { UsersRepositoryImpl() }
     }
 
     override fun onCreate()
