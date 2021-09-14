@@ -2,16 +2,20 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -23,7 +27,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,8 +47,34 @@ fun LoginScreen(viewModel: LoginViewModel)
 {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
-        //todo logo (and app name???)
-        LoginRegister(viewModel)
+        //todo check padding... add modifier?
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            //todo isn't it bad if i put an initial value here AND in the view model?
+            val uiState by viewModel.uiState.observeAsState(LoginUiState())
+
+            //todo logo (and app name???)
+            LoginRegister(viewModel)
+
+            if (uiState.isLoading)
+            {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            //do nothing. the user should not be able to change anything while loading
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            //todo show "General" error - login failed/network error etc.
+            // check if the errors remain after some configurations...
+            // probably should reset the error somewhere
+        }
     }
 
     //todo add ALL composables here
@@ -137,7 +170,12 @@ fun EmailPasswordTextField(
 @Composable
 fun LoginRegister(viewModel: LoginViewModel)
 {
+    //todo should i pass the uiState only instead of the view model?
+    // i am already observing the state in the top level "LoginScreen".
+    // is it a problem if i am also observing here?
+
     //todo do i need to remember the focused field?
+    // it is not automatically saved. decide if to save or not
 
     Column(
         modifier = Modifier.padding(16.dp),
@@ -172,17 +210,20 @@ fun LoginRegister(viewModel: LoginViewModel)
             modifier = maxWidthModifier,
             horizontalArrangement = Arrangement.End
         ) {
+            val focusManager = LocalFocusManager.current
             Button(
-                onClick = { viewModel.onLoginClicked() }
+                onClick = {
+                    focusManager.clearFocus()
+                    viewModel.onLoginClicked()
+                }
             ) {
                 Text(stringResource(id = R.string.login))
             }
         }
 
-        i stopped here
-        loading state should probably be done by wrapping everything in a box composable
-        where the box captures all user clicks.
-                overall errors should also be handled there using a dialog or snackbar
+//        i stopped here
+//        loading state should probably be done by wrapping everything in a box composable
+//        where the box captures all user clicks.overall errors should also be handled there using a dialog or snackbar
         //todo login button
         //      reflect result of login success/failure in ui
 
