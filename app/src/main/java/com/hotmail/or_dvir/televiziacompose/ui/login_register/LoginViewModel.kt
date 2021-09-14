@@ -47,8 +47,14 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
 
     fun onLoginClicked()
     {
-        //the validate*() functions update _uiState accordingly
-        if (validateEmail() && validatePassword())
+        //the validate*() functions update _uiState.
+        //therefore, we need to call BOTH so the full state is updated.
+        //if we put them directly in the "if" statement and email is invalid,
+        //validatePassword() will be skipped!
+        val validEmail = validateEmail()
+        val validPassword = validatePassword()
+
+        if (validEmail && validPassword)
         {
             //valid input. perform login
             viewModelScope.launch(mainDispatcher) {
