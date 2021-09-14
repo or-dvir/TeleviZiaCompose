@@ -41,7 +41,7 @@ fun LoginScreen(viewModel: LoginViewModel)
     //todo look into landscape mode
     TeleviZiaComposeTheme {
         //todo logo (and app name???)
-        UserInput(viewModel)
+        LoginRegister(viewModel)
     }
 
     //todo add ALL composables here
@@ -135,7 +135,7 @@ fun EmailPasswordTextField(
 }
 
 @Composable
-fun UserInput(viewModel: LoginViewModel)
+fun LoginRegister(viewModel: LoginViewModel)
 {
     //todo do i need to remember the focused field?
 
@@ -179,6 +179,10 @@ fun UserInput(viewModel: LoginViewModel)
             }
         }
 
+        i stopped here
+        loading state should probably be done by wrapping everything in a box composable
+        where the box captures all user clicks.
+                overall errors should also be handled there using a dialog or snackbar
         //todo login button
         //      reflect result of login success/failure in ui
 
