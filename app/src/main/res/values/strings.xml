@@ -9,4 +9,6 @@
 
     <string name="contentDescription_showPassword">Show password</string>
     <string name="contentDescription_hidePassword">Hide password</string>
+
+    <string name="login">Login</string>
 </resources>
