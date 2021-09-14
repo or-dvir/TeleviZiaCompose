@@ -2,13 +2,16 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -163,7 +166,23 @@ fun UserInput(viewModel: LoginViewModel)
             modifier = maxWidthModifier
         ) { viewModel.onPasswordInputChanged(it) }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = maxWidthModifier,
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                onClick = { viewModel.onLoginClicked() }
+            ) {
+                Text(stringResource(id = R.string.login))
+            }
+        }
+
         //todo login button
+        //      handle click in view model
+        //      reflect result of login success/failure in ui
+
         //todo register button
     }
 }
