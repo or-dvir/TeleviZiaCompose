@@ -3,6 +3,7 @@ package com.hotmail.or_dvir.televiziacompose.ui.login_register
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -62,7 +62,10 @@ fun LoginScreen(viewModel: LoginViewModel)
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable {
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
                             //do nothing. the user should not be able to change anything while loading
                         },
                     contentAlignment = Alignment.Center
@@ -221,9 +224,6 @@ fun LoginRegister(viewModel: LoginViewModel)
             }
         }
 
-//        i stopped here
-//        loading state should probably be done by wrapping everything in a box composable
-//        where the box captures all user clicks.overall errors should also be handled there using a dialog or snackbar
         //todo login button
         //      reflect result of login success/failure in ui
 
