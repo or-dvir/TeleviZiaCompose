@@ -59,19 +59,7 @@ fun LoginScreen(viewModel: LoginViewModel)
 
             if (uiState.isLoading)
             {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            //do nothing. the user should not be able to change anything while loading
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                LoadingIndicatorFullScreen()
             }
 
             //todo show "General" error - login failed/network error etc.
@@ -81,6 +69,23 @@ fun LoginScreen(viewModel: LoginViewModel)
     }
 
     //todo add ALL composables here
+}
+
+@Composable
+fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                //do nothing. the user should not be able to change anything while loading
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
