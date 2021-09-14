@@ -6,7 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.*
+import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.NetworkError
+import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.NonExistingUser
+import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.WrongPassword
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepository
 import kotlinx.coroutines.Dispatchers
