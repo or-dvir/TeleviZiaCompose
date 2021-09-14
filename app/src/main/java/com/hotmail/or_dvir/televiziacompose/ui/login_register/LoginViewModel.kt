@@ -25,14 +25,20 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
     fun onEmailInputChanged(newInput: String)
     {
         updateUiState(
-            uiState.value!!.copy(emailText = newInput)
+            uiState.value!!.copy(
+                emailError = "", //reset any errors
+                emailText = newInput
+            )
         )
     }
 
     fun onPasswordInputChanged(newInput: String)
     {
         updateUiState(
-            uiState.value!!.copy(passwordText = newInput)
+            uiState.value!!.copy(
+                passwordText = newInput,
+                passwordError = "", //reset any errors
+            )
         )
 
     }
@@ -45,7 +51,12 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
             //valid input. perform login
             viewModelScope.launch(mainDispatcher) {
                 updateUiState(
-                    uiState.value!!.copy(isLoading = true)
+                    uiState.value!!.copy(
+                        isLoading = true,
+                        loginError = "", //reset any errors
+                        emailError = "", //reset any errors
+                        passwordError = "", //reset any errors
+                    )
                 )
 
                 when (usersRepo.login(uiState.value!!.emailText, uiState.value!!.passwordText))
