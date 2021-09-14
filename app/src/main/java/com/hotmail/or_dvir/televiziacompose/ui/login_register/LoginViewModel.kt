@@ -133,6 +133,13 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
         _uiState.value = newState
     }
 
+    fun resetLoginError()
+    {
+        updateUiState(
+            _uiState.value!!.copy(loginError = "")
+        )
+    }
+
     ////////////////////////////////
     ////////////////////////////////
     ////////////////////////////////

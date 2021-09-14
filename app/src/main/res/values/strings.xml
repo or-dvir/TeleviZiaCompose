@@ -14,4 +14,5 @@
     <string name="contentDescription_hidePassword">Hide password</string>
 
     <string name="login">Login</string>
+    <string name="ok">OK</string>
 </resources>

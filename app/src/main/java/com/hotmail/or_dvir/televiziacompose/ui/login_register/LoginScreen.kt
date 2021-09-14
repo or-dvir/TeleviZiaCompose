@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -22,6 +23,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -57,22 +59,41 @@ fun LoginScreen(viewModel: LoginViewModel)
             //todo logo (and app name???)
             LoginRegister(viewModel)
 
+            uiState.loginError.let {
+                if (it.isNotBlank())
+                {
+                    val onDialogDismissed = {
+                        viewModel.resetLoginError()
+                    }
+
+                    AlertDialog(
+                        onDismissRequest = onDialogDismissed,
+                        confirmButton = {
+                            TextButton(onClick = onDialogDismissed) {
+                                Text(stringResource(id = R.string.ok))
+                            }
+                        },
+                        text = {
+                            Text(it)
+                        }
+                    )
+                }
+            }
+
+            //this should be the LAST composable so it shows above everything else
             if (uiState.isLoading)
             {
                 LoadingIndicatorFullScreen()
             }
 
-            //todo show "General" error - login failed/network error etc.
-            // check if the errors remain after some configurations...
-            // probably should reset the error somewhere
+            //todo add ALL composables here
         }
     }
-
-    //todo add ALL composables here
 }
 
 @Composable
-fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier) {
+fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
+{
     Box(
         modifier = modifier
             .fillMaxSize()
