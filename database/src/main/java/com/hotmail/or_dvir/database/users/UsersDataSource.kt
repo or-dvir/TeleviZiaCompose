@@ -32,7 +32,7 @@ object UsersDataSource
             null
         } else
         {
-            UserError.ConnectionError
+            UserError.NetworkError
         }
     }
 
@@ -45,6 +45,6 @@ object UsersDataSource
     {
         object NonExistingUser : UserError()
         object WrongPassword : UserError()
-        object ConnectionError : UserError()
+        object NetworkError : UserError()
     }
 }

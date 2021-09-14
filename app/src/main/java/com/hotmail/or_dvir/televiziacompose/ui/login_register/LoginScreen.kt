@@ -180,7 +180,6 @@ fun UserInput(viewModel: LoginViewModel)
         }
 
         //todo login button
-        //      handle click in view model
         //      reflect result of login success/failure in ui
 
         //todo register button
