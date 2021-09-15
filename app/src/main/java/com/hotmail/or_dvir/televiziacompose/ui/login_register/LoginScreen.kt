@@ -24,16 +24,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
 import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinesTextFieldWithError
 import com.hotmail.or_dvir.televiziacompose.ui.shared.PasswordTextField
+import com.hotmail.or_dvir.televiziacompose.ui.theme.LinkColor
 import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel)
+fun LoginScreen(
+    viewModel: LoginViewModel
+)
 {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
@@ -137,18 +142,37 @@ fun LoginRegister(viewModel: LoginViewModel)
 
         Row(
             modifier = maxWidthModifier,
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
+//            horizontalArrangement = Arrangement.End
         ) {
             val focusManager = LocalFocusManager.current
+            val clearFocus = { focusManager.clearFocus() }
+
+            TextButton(
+                only highlight text when clicked
+                onClick = {
+                    clearFocus()
+                    do me
+                    /*TODO navigate to register screen*/
+                }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.register),
+                    color = LinkColor,
+                    style = TextStyle(textDecoration = TextDecoration.Underline)
+                )
+            }
+
             Button(
                 onClick = {
-                    focusManager.clearFocus()
+                    clearFocus()
                     viewModel.onLoginClicked()
                 }
             ) {
                 Text(stringResource(id = R.string.login))
             }
         }
+
 
         //todo login button
         //      reflect result of login success/failure in ui
