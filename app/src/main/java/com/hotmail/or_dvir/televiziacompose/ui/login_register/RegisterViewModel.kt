@@ -14,6 +14,6 @@ class RegisterViewModel(private val app: Application) : AndroidViewModel(app), K
     private val mainDispatcher = Dispatchers.Main
     private val usersRepo: UsersRepository by inject()
 
-    private val _uiState = MutableLiveData(RegisterUiState())
-    val uiState: LiveData<RegisterUiState> = _uiState
+//    private val _uiState = MutableLiveData(RegisterUiState())
+//    val uiState: LiveData<RegisterUiState> = _uiState
 }
