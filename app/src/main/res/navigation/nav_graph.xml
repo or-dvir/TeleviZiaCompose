@@ -7,5 +7,21 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.hotmail.or_dvir.televiziacompose.ui.login_register.RegisterFragment"
+        android:label="RegisterFragment">
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+    </fragment>
 </navigation>
