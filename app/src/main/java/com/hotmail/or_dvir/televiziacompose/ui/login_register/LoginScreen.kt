@@ -149,10 +149,12 @@ fun LoginRegister(viewModel: LoginViewModel)
             val clearFocus = { focusManager.clearFocus() }
 
             TextButton(
-                only highlight text when clicked
                 onClick = {
                     clearFocus()
-                    do me
+                    only highlight text when clicked
+
+                    do me. this should trigger a function which the caller (login fragment)
+                    would implement and use its own nav controller
                     /*TODO navigate to register screen*/
                 }
             ) {
