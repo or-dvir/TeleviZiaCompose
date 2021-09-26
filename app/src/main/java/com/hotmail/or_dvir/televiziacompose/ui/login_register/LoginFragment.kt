@@ -28,7 +28,14 @@ class LoginFragment : Fragment()
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-            setContent { LoginScreen(viewModel) }
+            setContent {
+                LoginScreen(
+                    viewModel = viewModel,
+                    onRegisterClicked = { email, password ->
+                        navigate to register screen
+                    }
+                )
+            }
         }
     }
 }

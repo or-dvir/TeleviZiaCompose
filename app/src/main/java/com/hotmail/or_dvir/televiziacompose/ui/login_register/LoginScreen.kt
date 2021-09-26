@@ -36,7 +36,8 @@ import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onRegisterClicked: (email: String, password: String) -> Unit
 )
 {
     //todo look into landscape mode
@@ -49,7 +50,7 @@ fun LoginScreen(
             val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
             //todo logo (and app name???)
-            LoginRegister(viewModel)
+            LoginRegister(viewModel, onRegisterClicked)
 
             uiState.loginError.let {
                 if (it.isNotBlank())
@@ -102,7 +103,10 @@ fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
 }
 
 @Composable
-fun LoginRegister(viewModel: LoginViewModel)
+fun LoginRegister(
+    viewModel: LoginViewModel,
+    onRegisterClicked: (email: String, password: String) -> Unit
+)
 {
     //todo should i pass the uiState only instead of the view model?
     // i am already observing the state in the top level "LoginScreen".
@@ -149,9 +153,7 @@ fun LoginRegister(viewModel: LoginViewModel)
             Text(
                 modifier = Modifier.clickable {
                     clearFocus()
-                    do me.this should trigger a function which the caller (login fragment)
-                    would implement and use its own nav controller
-                    /*TODO navigate to register screen*/
+                    onRegisterClicked(uiState.emailText, uiState.passwordText)
                 },
                 text = stringResource(id = R.string.register),
                 color = LinkColor,
