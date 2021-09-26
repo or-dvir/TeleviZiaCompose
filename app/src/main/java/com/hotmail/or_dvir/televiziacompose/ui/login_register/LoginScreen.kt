@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -143,27 +142,21 @@ fun LoginRegister(viewModel: LoginViewModel)
         Row(
             modifier = maxWidthModifier,
             horizontalArrangement = Arrangement.SpaceBetween
-//            horizontalArrangement = Arrangement.End
         ) {
             val focusManager = LocalFocusManager.current
             val clearFocus = { focusManager.clearFocus() }
 
-            TextButton(
-                onClick = {
+            Text(
+                modifier = Modifier.clickable {
                     clearFocus()
-                    only highlight text when clicked
-
-                    do me. this should trigger a function which the caller (login fragment)
+                    do me.this should trigger a function which the caller (login fragment)
                     would implement and use its own nav controller
                     /*TODO navigate to register screen*/
-                }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.register),
-                    color = LinkColor,
-                    style = TextStyle(textDecoration = TextDecoration.Underline)
-                )
-            }
+                },
+                text = stringResource(id = R.string.register),
+                color = LinkColor,
+                textDecoration = TextDecoration.Underline
+            )
 
             Button(
                 onClick = {
