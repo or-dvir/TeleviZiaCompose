@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
@@ -151,13 +150,14 @@ fun LoginRegister(
             val clearFocus = { focusManager.clearFocus() }
 
             Text(
-                modifier = Modifier.clickable {
-                    clearFocus()
-                    onRegisterClicked(uiState.emailText, uiState.passwordText)
-                },
+                modifier = Modifier
+                    .clickable {
+                        clearFocus()
+                        onRegisterClicked(uiState.emailText, uiState.passwordText)
+                    }
+                    .padding(5.dp),
                 text = stringResource(id = R.string.register),
-                color = LinkColor,
-                textDecoration = TextDecoration.Underline
+                color = LinkColor
             )
 
             Button(
