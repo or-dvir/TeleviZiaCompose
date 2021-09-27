@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -20,8 +22,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
@@ -99,8 +103,19 @@ fun LoginRegister(
         val uiState by viewModel.uiState.observeAsState(LoginUiState())
         val maxWidthModifier = Modifier.fillMaxWidth()
 
+        val focusManager = LocalFocusManager.current
+        val clearFocus = { focusManager.clearFocus() }
+        val clearFocusAndLogin = {
+            clearFocus()
+            viewModel.onLoginClicked()
+        }
+
         //email field
         OutlinedTextFieldWithError(
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onAny = { focusManager.moveFocus(FocusDirection.Down) }
+            ),
             text = uiState.emailText,
             error = uiState.emailError,
             hint = R.string.hint_email,
@@ -111,6 +126,10 @@ fun LoginRegister(
         Spacer(modifier = Modifier.height(5.dp))
 
         PasswordTextField(
+            imeAction = ImeAction.Go,
+            keyboardActions = KeyboardActions(
+                onAny = { clearFocusAndLogin() }
+            ),
             text = uiState.passwordText,
             error = uiState.passwordError,
             modifier = maxWidthModifier,
@@ -123,9 +142,7 @@ fun LoginRegister(
             modifier = maxWidthModifier,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            val focusManager = LocalFocusManager.current
-            val clearFocus = { focusManager.clearFocus() }
-
+            //register button
             Text(
                 modifier = Modifier
                     .clickable {
@@ -136,18 +153,13 @@ fun LoginRegister(
                 text = stringResource(id = R.string.register),
                 color = LinkColor
             )
-
+            //login button
             Button(
-                onClick = {
-                    clearFocus()
-                    viewModel.onLoginClicked()
-                }
+                onClick = { clearFocusAndLogin() }
             ) {
                 Text(stringResource(id = R.string.login))
             }
         }
-
-        //todo register button
     }
 }
 

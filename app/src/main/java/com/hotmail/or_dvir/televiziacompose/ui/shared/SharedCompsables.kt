@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -32,6 +34,7 @@ fun OutlinedTextFieldWithError(
     modifier: Modifier = Modifier,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
     onTextChanged: (String) -> Unit
@@ -41,6 +44,8 @@ fun OutlinedTextFieldWithError(
 
     Column {
         OutlinedTextField(
+
+            keyboardActions = keyboardActions,
             visualTransformation = visualTransformation,
             value = text,
             isError = showError,
@@ -69,6 +74,8 @@ fun PasswordTextField(
     text: String,
     error: String,
     modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.None,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     @StringRes hint: Int = R.string.hint_password,
     onTextChanged: (String) -> Unit
 )
@@ -97,7 +104,11 @@ fun PasswordTextField(
         text = text,
         error = error,
         hint = hint,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(
+            imeAction = imeAction,
+            keyboardType = KeyboardType.Password
+        ),
+        keyboardActions = keyboardActions,
         visualTransformation = passwordTransformation,
         modifier = modifier,
         onTextChanged = onTextChanged,
