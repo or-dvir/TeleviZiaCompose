@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
-import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinesTextFieldWithError
+import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinedTextFieldWithError
 import com.hotmail.or_dvir.televiziacompose.ui.shared.PasswordTextField
 import com.hotmail.or_dvir.televiziacompose.ui.theme.LinkColor
 import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
@@ -100,7 +100,7 @@ fun LoginRegister(
         val maxWidthModifier = Modifier.fillMaxWidth()
 
         //email field
-        OutlinesTextFieldWithError(
+        OutlinedTextFieldWithError(
             text = uiState.emailText,
             error = uiState.emailError,
             hint = R.string.hint_email,
@@ -146,10 +146,6 @@ fun LoginRegister(
                 Text(stringResource(id = R.string.login))
             }
         }
-
-
-        //todo login button
-        //      reflect result of login success/failure in ui
 
         //todo register button
     }
