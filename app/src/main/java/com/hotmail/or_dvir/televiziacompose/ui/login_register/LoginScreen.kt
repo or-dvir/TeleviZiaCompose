@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -50,27 +48,6 @@ fun LoginScreen(
 
             //todo logo (and app name???)
             LoginRegister(viewModel, onRegisterClicked)
-
-            uiState.loginError.let {
-                if (it.isNotBlank())
-                {
-                    val onDialogDismissed = {
-                        viewModel.resetLoginError()
-                    }
-
-                    AlertDialog(
-                        onDismissRequest = onDialogDismissed,
-                        confirmButton = {
-                            TextButton(onClick = onDialogDismissed) {
-                                Text(stringResource(id = R.string.ok))
-                            }
-                        },
-                        text = {
-                            Text(it)
-                        }
-                    )
-                }
-            }
 
             //this should be the LAST composable so it shows above everything else
             if (uiState.isLoading)

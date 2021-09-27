@@ -9,30 +9,30 @@ object UsersDataSource
     /**
      * @return UserError? an error, or null if successful
      */
-    fun register(user: UserEntity): UserError?
+    fun register(user: UserEntity): LoginResponse
     {
         //todo
-        return null
+        return LoginResponse.Success
     }
 
     /**
      * @return UserError? an error, or null if successful
      */
-    fun login(email: String, password: String): UserError?
+    fun login(email: String, password: String): LoginResponse
     {
-        val dbUser = allUsers.find { it.email == email } ?: return UserError.NonExistingUser
+        val dbUser = allUsers.find { it.email == email } ?: return LoginResponse.NonExistingUser
 
         if (dbUser.password != password)
         {
-            return UserError.WrongPassword
+            return LoginResponse.WrongPassword
         }
 
         return if (Random.nextInt(100) <= 80)
         {
-            null
+            LoginResponse.Success
         } else
         {
-            UserError.NetworkError
+            LoginResponse.NetworkError
         }
     }
 
@@ -41,10 +41,11 @@ object UsersDataSource
     ////////////////////////////
     ////////////////////////////
 
-    sealed class UserError
+    sealed class LoginResponse
     {
-        object NonExistingUser : UserError()
-        object WrongPassword : UserError()
-        object NetworkError : UserError()
+        object Success : LoginResponse()
+        object NonExistingUser : LoginResponse()
+        object WrongPassword : LoginResponse()
+        object NetworkError : LoginResponse()
     }
 }

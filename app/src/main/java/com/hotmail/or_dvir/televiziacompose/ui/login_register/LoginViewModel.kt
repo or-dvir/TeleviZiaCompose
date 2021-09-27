@@ -6,12 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.NetworkError
-import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.NonExistingUser
-import com.hotmail.or_dvir.database.users.UsersDataSource.UserError.WrongPassword
+import com.hotmail.or_dvir.database.users.UsersDataSource.LoginResponse
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -23,6 +23,9 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
 
     private val _uiState = MutableLiveData(LoginUiState())
     val uiState: LiveData<LoginUiState> = _uiState
+
+    private val loginEventsChannel = Channel<LoginEvent>()
+    val loginEventsFlow = loginEventsChannel.receiveAsFlow()
 
     fun onEmailInputChanged(newInput: String)
     {
@@ -61,33 +64,29 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
                 updateUiState(
                     uiState.value!!.copy(
                         isLoading = true,
-                        loginError = "", //reset any errors
                         emailError = "", //reset any errors
                         passwordError = "", //reset any errors
                     )
                 )
 
-                when (usersRepo.login(uiState.value!!.emailText, uiState.value!!.passwordText))
-                {
-                    null ->
-                    {/* //todo login successful*/
+                val loginResult =
+                    usersRepo.login(uiState.value!!.emailText, uiState.value!!.passwordText)
+
+                updateUiState(
+                    uiState.value!!.copy(isLoading = false)
+                )
+
+                loginEventsChannel.send(
+                    when (loginResult)
+                    {
+                        LoginResponse.Success -> LoginEvent.Success
+                        LoginResponse.NetworkError -> LoginEvent.Error(app.getString(R.string.error_networkError))
+                        LoginResponse.NonExistingUser -> LoginEvent.Error(app.getString(R.string.error_nonExistingUser))
+                        LoginResponse.WrongPassword -> LoginEvent.Error(app.getString(R.string.error_wrongPassword))
                     }
-                    NetworkError -> onLoginResult(app.getString(R.string.error_networkError))
-                    NonExistingUser -> onLoginResult(app.getString(R.string.error_nonExistingUser))
-                    WrongPassword -> onLoginResult(app.getString(R.string.error_wrongPassword))
-                }
+                )
             }
         }
-    }
-
-    private fun onLoginResult(error: String?)
-    {
-        updateUiState(
-            uiState.value!!.copy(
-                isLoading = false,
-                loginError = error.orEmpty()
-            )
-        )
     }
 
     private fun validateEmail(): Boolean
@@ -133,13 +132,6 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
         _uiState.value = newState
     }
 
-    fun resetLoginError()
-    {
-        updateUiState(
-            _uiState.value!!.copy(loginError = "")
-        )
-    }
-
     ////////////////////////////////
     ////////////////////////////////
     ////////////////////////////////
@@ -150,7 +142,17 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
         val emailError: String = "",
         val passwordText: String = "",
         val passwordError: String = "",
-        val isLoading: Boolean = false,
-        val loginError: String = ""
+        val isLoading: Boolean = false
     )
+
+    ////////////////////////////////
+    ////////////////////////////////
+    ////////////////////////////////
+    ////////////////////////////////
+
+    sealed class LoginEvent
+    {
+        object Success : LoginEvent()
+        class Error(val error: String) : LoginEvent()
+    }
 }

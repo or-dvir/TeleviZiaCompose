@@ -15,7 +15,7 @@ class UsersRepositoryImpl : UsersRepository
         delay(3000)
     }
 
-    override suspend fun login(email: String, password: String): UsersDataSource.UserError?
+    override suspend fun login(email: String, password: String): UsersDataSource.LoginResponse
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
@@ -23,7 +23,7 @@ class UsersRepositoryImpl : UsersRepository
         }
     }
 
-    override suspend fun register(email: String, password: String): UsersDataSource.UserError?
+    override suspend fun register(email: String, password: String): UsersDataSource.LoginResponse
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
