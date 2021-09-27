@@ -21,8 +21,7 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
     private val mainDispatcher = Dispatchers.Main
     private val usersRepo: UsersRepository by inject()
 
-    private val _uiState = MutableLiveData<LoginUiState>()
-//    private val _uiState = MutableLiveData(LoginUiState())
+    private val _uiState = MutableLiveData(LoginUiState())
     val uiState: LiveData<LoginUiState> = _uiState
 
     private val loginEventsChannel = Channel<LoginEvent>()
