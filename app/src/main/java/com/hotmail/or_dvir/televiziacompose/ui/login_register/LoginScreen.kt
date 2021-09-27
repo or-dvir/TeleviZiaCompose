@@ -1,5 +1,7 @@
 package com.hotmail.or_dvir.televiziacompose.ui.login_register
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
@@ -43,67 +49,76 @@ fun LoginScreen(
 {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
-        //todo check padding... add modifier?
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            //todo isn't it bad if i put an initial value here AND in the view model?
             val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
-            //todo logo (and app name???)
-            LoginRegister(viewModel, onRegisterClicked)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Branding(
+                    Modifier.padding(top = 75.dp)
+                )
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                LoginRegister(
+                    uiState = uiState,
+                    viewModel = viewModel,
+                    onRegisterClicked = onRegisterClicked
+                )
+            }
 
             //this should be the LAST composable so it shows above everything else
             if (uiState.isLoading)
             {
                 LoadingIndicatorFullScreen()
             }
-
-            //todo add ALL composables here
         }
     }
 }
 
 @Composable
-fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
+fun Branding(modifier: Modifier = Modifier)
 {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                //do nothing. the user should not be able to change anything while loading
-            },
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircularProgressIndicator()
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = stringResource(id = R.string.contentDescription_logo)
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Text(
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h4,
+            text = stringResource(id = R.string.app_name)
+        )
     }
 }
 
 @Composable
 fun LoginRegister(
+    uiState: LoginUiState,
     viewModel: LoginViewModel,
+    modifier: Modifier = Modifier,
     onRegisterClicked: (email: String, password: String) -> Unit
 )
 {
-    //todo should i pass the uiState only instead of the view model?
-    // i am already observing the state in the top level "LoginScreen".
-    // is it a problem if i am also observing here?
-
-    //todo do i need to remember the focused field?
-    // it is not automatically saved. decide if to save or not
+    //todo focus is not "remembered" at the moment. how do i remember the focused field?
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = modifier.padding(16.dp),
     ) {
 
-        //todo isn't it bad if i put an initial value here AND in the view model?
-        val uiState by viewModel.uiState.observeAsState(LoginUiState())
         val maxWidthModifier = Modifier.fillMaxWidth()
-
         val focusManager = LocalFocusManager.current
+
         val clearFocus = { focusManager.clearFocus() }
         val clearFocusAndLogin = {
             clearFocus()
@@ -160,6 +175,24 @@ fun LoginRegister(
                 Text(stringResource(id = R.string.login))
             }
         }
+    }
+}
+
+@Composable
+fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
+{
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                //do nothing. the user should not be able to change anything while loading
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 

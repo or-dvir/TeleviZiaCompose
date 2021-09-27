@@ -44,7 +44,6 @@ fun OutlinedTextFieldWithError(
 
     Column {
         OutlinedTextField(
-
             keyboardActions = keyboardActions,
             visualTransformation = visualTransformation,
             value = text,
