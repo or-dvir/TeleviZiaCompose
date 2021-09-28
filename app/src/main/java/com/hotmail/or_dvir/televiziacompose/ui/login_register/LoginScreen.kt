@@ -49,7 +49,6 @@ fun LoginScreen(
     viewModel: LoginViewModel,
     onRegisterClicked: (email: String, password: String) -> Unit
 ) {
-    //todo look into landscape mode
     TeleviZiaComposeTheme {
         Box(
             modifier = Modifier
