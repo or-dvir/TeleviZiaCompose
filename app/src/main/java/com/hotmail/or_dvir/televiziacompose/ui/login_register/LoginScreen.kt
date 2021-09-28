@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -46,12 +48,13 @@ import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 fun LoginScreen(
     viewModel: LoginViewModel,
     onRegisterClicked: (email: String, password: String) -> Unit
-)
-{
+) {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
@@ -73,8 +76,7 @@ fun LoginScreen(
             }
 
             //this should be the LAST composable so it shows above everything else
-            if (uiState.isLoading)
-            {
+            if (uiState.isLoading) {
                 LoadingIndicatorFullScreen()
             }
         }
@@ -82,8 +84,7 @@ fun LoginScreen(
 }
 
 @Composable
-fun Branding(modifier: Modifier = Modifier)
-{
+fun Branding(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -111,8 +112,7 @@ fun LoginRegister(
     viewModel: LoginViewModel,
     modifier: Modifier = Modifier,
     onRegisterClicked: (email: String, password: String) -> Unit
-)
-{
+) {
     //todo focus is not "remembered" at the moment. how do i remember the focused field?
 
     Column(
@@ -182,8 +182,7 @@ fun LoginRegister(
 }
 
 @Composable
-fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
-{
+fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -202,8 +201,7 @@ fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier)
 //region
 @Preview(showSystemUi = true)
 @Composable
-fun LoginScreenPreview()
-{
+fun LoginScreenPreview() {
     //todo how do i pass the view model here?
 //    LoginScreen()
 }
