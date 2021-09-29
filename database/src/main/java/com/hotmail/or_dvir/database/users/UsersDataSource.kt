@@ -4,14 +4,14 @@ import kotlin.random.Random
 
 object UsersDataSource
 {
-    private val allUsers = listOf<UserEntity>()
+    private val allUsers = mutableListOf<UserEntity>()
 
     /**
      * @return UserError? an error, or null if successful
      */
-    fun register(user: UserEntity): LoginResponse
+    fun register(email: String, password: String): LoginResponse
     {
-        //todo
+        allUsers.add(UserEntity(email, password))
         return LoginResponse.Success
     }
 
