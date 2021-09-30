@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.televiziacompose.repositories
 
-import com.hotmail.or_dvir.database.users.UserEntity
 import com.hotmail.or_dvir.database.users.UsersDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,9 +26,7 @@ class UsersRepositoryImpl : UsersRepository
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            UsersDataSource.register(
-                UserEntity(email, password)
-            )
+            UsersDataSource.register(email, password)
         }
     }
 }
