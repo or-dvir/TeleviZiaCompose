@@ -38,7 +38,6 @@ fun RegisterScreen(viewModel: RegisterViewModel)
 {
     //todo look into landscape mode
     TeleviZiaComposeTheme {
-        //todo check padding... add modifier?
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -59,6 +58,7 @@ fun RegisterScreen(viewModel: RegisterViewModel)
                 viewModel.onRegisterClicked()
             }
 
+            //todo why is it not centered?
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,8 +102,8 @@ fun RegisterScreen(viewModel: RegisterViewModel)
                     keyboardActions = KeyboardActions(
                         onAny = { clearFocus() }
                     ),
-                    text = uiState.passwordText,
-                    error = uiState.passwordError,
+                    text = uiState.passwordConfirmationText,
+                    error = uiState.passwordConfirmationError,
                     hint = R.string.hint_passwordConfirmation,
                     modifier = maxWidthModifier,
                     onTextChanged = { viewModel.onPasswordConfirmationInputChanged(it) }
