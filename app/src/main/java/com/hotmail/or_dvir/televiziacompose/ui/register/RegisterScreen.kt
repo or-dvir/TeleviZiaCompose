@@ -41,7 +41,10 @@ fun RegisterScreen(viewModel: RegisterViewModel)
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .border(2.dp, Color.Blue)
+                .border(2.dp, Color.Green)
+                //todo BUG BUG BUG
+                // this causes children of Box to not "respect" height modifiers
+                // right now it means that the loading dialog appears on top and not the middle
                 .verticalScroll(rememberScrollState())
         ) {
             val uiState by viewModel.uiState.observeAsState(RegisterUiState())
@@ -97,6 +100,7 @@ fun RegisterScreen(viewModel: RegisterViewModel)
 
                 Spacer(modifier = spacerModifier)
 
+                //password confirmation
                 PasswordTextField(
                     imeAction = ImeAction.Done,
                     keyboardActions = KeyboardActions(
