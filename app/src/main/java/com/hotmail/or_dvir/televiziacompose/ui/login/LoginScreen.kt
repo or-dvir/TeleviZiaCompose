@@ -46,11 +46,15 @@ import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 fun LoginScreen(
     viewModel: LoginViewModel,
     onRegisterClicked: (email: String, password: String) -> Unit
-) {
+)
+{
     TeleviZiaComposeTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                //todo BUG BUG BUG
+                // this causes children of Box to not "respect" height modifiers
+                // right now it means that the loading dialog appears on top and not the middle
                 .verticalScroll(rememberScrollState())
         ) {
             val uiState by viewModel.uiState.observeAsState(LoginUiState())
@@ -73,7 +77,8 @@ fun LoginScreen(
             }
 
             //this should be the LAST composable so it shows above everything else
-            if (uiState.isLoading) {
+            if (uiState.isLoading)
+            {
                 LoadingIndicatorFullScreen()
             }
         }
@@ -81,7 +86,8 @@ fun LoginScreen(
 }
 
 @Composable
-fun Branding(modifier: Modifier = Modifier) {
+fun Branding(modifier: Modifier = Modifier)
+{
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -109,7 +115,8 @@ fun LoginRegister(
     viewModel: LoginViewModel,
     modifier: Modifier = Modifier,
     onRegisterClicked: (email: String, password: String) -> Unit
-) {
+)
+{
     //todo focus is not "remembered" at the moment. how do i remember the focused field?
 
     Column(
@@ -181,7 +188,8 @@ fun LoginRegister(
 //region
 @Preview(showSystemUi = true)
 @Composable
-fun LoginScreenPreview() {
+fun LoginScreenPreview()
+{
     //todo how do i pass the view model here?
 //    LoginScreen()
 }
