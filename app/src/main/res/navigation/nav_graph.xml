@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginFragment"
+        android:name="com.hotmail.or_dvir.televiziacompose.ui.login.LoginFragment"
         android:label="LoginFragment">
         <action
             android:id="@+id/to_registerFragment"
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.hotmail.or_dvir.televiziacompose.ui.login_register.RegisterFragment"
+        android:name="com.hotmail.or_dvir.televiziacompose.ui.register.RegisterFragment"
         android:label="RegisterFragment">
         <argument
             android:name="email"

@@ -1,8 +1,7 @@
-package com.hotmail.or_dvir.televiziacompose.ui.login_register
+package com.hotmail.or_dvir.televiziacompose.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,13 +17,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -38,7 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
-import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
+import com.hotmail.or_dvir.televiziacompose.ui.login.LoginViewModel.LoginUiState
+import com.hotmail.or_dvir.televiziacompose.ui.shared.LoadingIndicatorFullScreen
 import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinedTextFieldWithError
 import com.hotmail.or_dvir.televiziacompose.ui.shared.PasswordTextField
 import com.hotmail.or_dvir.televiziacompose.ui.theme.LinkColor
@@ -177,23 +175,6 @@ fun LoginRegister(
                 Text(stringResource(id = R.string.login))
             }
         }
-    }
-}
-
-@Composable
-fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                //do nothing. the user should not be able to change anything while loading
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 

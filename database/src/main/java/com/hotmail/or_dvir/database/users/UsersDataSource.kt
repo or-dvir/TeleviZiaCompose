@@ -9,10 +9,10 @@ object UsersDataSource
     /**
      * @return UserError? an error, or null if successful
      */
-    fun register(email: String, password: String): LoginResponse
+    fun register(email: String, password: String): RegisterResponse
     {
         allUsers.add(UserEntity(email, password))
-        return LoginResponse.Success
+        return RegisterResponse.Success
     }
 
     /**
@@ -47,5 +47,16 @@ object UsersDataSource
         object NonExistingUser : LoginResponse()
         object WrongPassword : LoginResponse()
         object NetworkError : LoginResponse()
+    }
+
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+
+    sealed class RegisterResponse()
+    {
+        object Success : RegisterResponse()
+        class Error(val error: String) : RegisterResponse()
     }
 }

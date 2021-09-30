@@ -5,8 +5,8 @@ import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepository
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepositoryImpl
 import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepository
 import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepositoryImpl
-import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel
-import com.hotmail.or_dvir.televiziacompose.ui.login_register.RegisterViewModel
+import com.hotmail.or_dvir.televiziacompose.ui.login.LoginViewModel
+import com.hotmail.or_dvir.televiziacompose.ui.register.RegisterViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

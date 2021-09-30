@@ -22,11 +22,11 @@ class UsersRepositoryImpl : UsersRepository
         }
     }
 
-    override suspend fun register(email: String, password: String): UsersDataSource.LoginResponse
+    override suspend fun register(email: String, password: String): UsersDataSource.RegisterResponse
     {
         return withContext(ioDispatcher) {
             pretendToLoad()
-            UsersDataSource.register(email, password)
+            UsersDataSource.register(email.trim(), password)
         }
     }
 }
