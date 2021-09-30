@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.imePadding
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
@@ -58,12 +59,13 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .navigationBarsWithImePadding()
             ) {
                 val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
+//                make text fields go above keyboard
                         Column(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().imePadding(),
+//                            modifier = Modifier.fillMaxSize().navigationBarsWithImePadding(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Branding(
