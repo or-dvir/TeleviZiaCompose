@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.televiziacompose.ui.login_register
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -37,6 +38,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.imePadding
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.ui.login_register.LoginViewModel.LoginUiState
 import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinedTextFieldWithError
@@ -50,33 +54,38 @@ fun LoginScreen(
     onRegisterClicked: (email: String, password: String) -> Unit
 ) {
     TeleviZiaComposeTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            val uiState by viewModel.uiState.observeAsState(LoginUiState())
-
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+        ProvideWindowInsets {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
-                Branding(
-                    Modifier.padding(top = 75.dp)
-                )
+                val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
-                Spacer(modifier = Modifier.height(30.dp))
+//                make text fields go above keyboard
+                        Column(
+                            modifier = Modifier.fillMaxSize().imePadding(),
+//                            modifier = Modifier.fillMaxSize().navigationBarsWithImePadding(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Branding(
+                                Modifier.padding(top = 75.dp)
+                            )
 
-                LoginRegister(
-                    uiState = uiState,
-                    viewModel = viewModel,
-                    onRegisterClicked = onRegisterClicked
-                )
-            }
+                            Spacer(modifier = Modifier.height(30.dp))
 
-            //this should be the LAST composable so it shows above everything else
-            if (uiState.isLoading) {
-                LoadingIndicatorFullScreen()
+                            LoginRegister(
+                                uiState = uiState,
+                                viewModel = viewModel,
+                                onRegisterClicked = onRegisterClicked
+                            )
+                        }
+
+                //this should be the LAST composable so it shows above everything else
+                if (uiState.isLoading)
+                {
+                    LoadingIndicatorFullScreen()
+                }
             }
         }
     }
