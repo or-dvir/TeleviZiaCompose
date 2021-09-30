@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,12 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginFragment : Fragment()
 {
     private val viewModel: LoginViewModel by viewModel()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
