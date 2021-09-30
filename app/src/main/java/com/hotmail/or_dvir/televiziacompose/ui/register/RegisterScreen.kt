@@ -49,6 +49,7 @@ fun RegisterScreen(viewModel: RegisterViewModel)
         ) {
             val uiState by viewModel.uiState.observeAsState(RegisterUiState())
 
+            i stopped here
             //todo add action bar with back button
             val maxWidthModifier = Modifier.fillMaxWidth()
             val spacerModifier = Modifier.height(5.dp)
