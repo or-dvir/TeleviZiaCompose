@@ -1,13 +1,10 @@
 package com.hotmail.or_dvir.televiziacompose.ui.register
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,12 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.hotmail.or_dvir.televiziacompose.R
-import com.hotmail.or_dvir.televiziacompose.ui.login.LoginViewModel
 import com.hotmail.or_dvir.televiziacompose.ui.register.RegisterViewModel.RegisterUiState
 import com.hotmail.or_dvir.televiziacompose.ui.shared.LoadingIndicatorFullScreen
 import com.hotmail.or_dvir.televiziacompose.ui.shared.OutlinedTextFieldWithError
 import com.hotmail.or_dvir.televiziacompose.ui.shared.PasswordTextField
-import com.hotmail.or_dvir.televiziacompose.ui.theme.LinkColor
 import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
 
 @Composable
