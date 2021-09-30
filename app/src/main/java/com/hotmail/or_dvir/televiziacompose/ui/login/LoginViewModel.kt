@@ -47,8 +47,20 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
         )
     }
 
+    private fun clearAllErrors()
+    {
+        updateUiState(
+            uiState.value!!.copy(
+                emailError = "",
+                passwordError = "",
+            )
+        )
+    }
+
     fun onLoginClicked()
     {
+        clearAllErrors()
+
         //the validate*() functions update _uiState.
         //therefore, we need to call BOTH so the full state is updated.
         //if we put them directly in the "if" statement and email is invalid,
@@ -61,11 +73,7 @@ class LoginViewModel(private val app: Application) : AndroidViewModel(app), Koin
             //valid input. perform login
             viewModelScope.launch(mainDispatcher) {
                 updateUiState(
-                    uiState.value!!.copy(
-                        isLoading = true,
-                        emailError = "", //reset any errors
-                        passwordError = "", //reset any errors
-                    )
+                    uiState.value!!.copy(isLoading = true)
                 )
 
                 val loginResult =

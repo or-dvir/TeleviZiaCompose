@@ -62,8 +62,21 @@ class RegisterViewModel(private val app: Application) : AndroidViewModel(app), K
         )
     }
 
+    private fun clearAllErrors()
+    {
+        updateUiState(
+            uiState.value!!.copy(
+                emailError = "",
+                passwordError = "",
+                passwordConfirmationError = "",
+            )
+        )
+    }
+
     fun onRegisterClicked()
     {
+        clearAllErrors()
+
         //the validate*() functions update _uiState.
         //therefore, we need to call ALL so the full state is updated.
         //if we put them directly in the "if" statement and email is invalid for example,
@@ -77,12 +90,7 @@ class RegisterViewModel(private val app: Application) : AndroidViewModel(app), K
             //valid input. perform login
             viewModelScope.launch(mainDispatcher) {
                 updateUiState(
-                    uiState.value!!.copy(
-                        isLoading = true,
-                        emailError = "", //reset any errors
-                        passwordError = "", //reset any errors
-                        passwordConfirmationError = "", //reset any errors
-                    )
+                    uiState.value!!.copy(isLoading = true)
                 )
 
                 val registerResult =
