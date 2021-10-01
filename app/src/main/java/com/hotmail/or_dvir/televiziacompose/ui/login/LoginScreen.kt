@@ -50,17 +50,14 @@ fun LoginScreen(
 {
     TeleviZiaComposeTheme {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                //todo BUG BUG BUG
-                // this causes children of Box to not "respect" height modifiers
-                // right now it means that the loading dialog appears on top and not the middle
-                .verticalScroll(rememberScrollState())
+            modifier = Modifier.fillMaxSize()
         ) {
             val uiState by viewModel.uiState.observeAsState(LoginUiState())
 
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Branding(

@@ -42,14 +42,9 @@ fun RegisterScreen(viewModel: RegisterViewModel)
             modifier = Modifier
                 .fillMaxSize()
                 .border(2.dp, Color.Green)
-                //todo BUG BUG BUG
-                // this causes children of Box to not "respect" height modifiers
-                // right now it means that the loading dialog appears on top and not the middle
-                .verticalScroll(rememberScrollState())
         ) {
             val uiState by viewModel.uiState.observeAsState(RegisterUiState())
 
-            i stopped here
             //todo add action bar with back button
             val maxWidthModifier = Modifier.fillMaxWidth()
             val spacerModifier = Modifier.height(5.dp)
@@ -62,10 +57,10 @@ fun RegisterScreen(viewModel: RegisterViewModel)
                 viewModel.onRegisterClicked()
             }
 
-            //todo why is it not centered?
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(2.dp)
                     .border(2.dp, Color.Red)
                     .padding(16.dp),
