@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import java.util.UUID
 import kotlin.random.Random
 
-object MoviesDataSource
-{
+object MoviesDataSource {
     val allMovies = List(
         size = 100,
         init = { index ->
@@ -20,16 +19,13 @@ object MoviesDataSource
     /**
      * @return Boolean success or failure
      */
-    fun addFavorite(movie: MovieEntity): Boolean
-    {
+    fun addFavorite(movie: MovieEntity): Boolean {
         return mutableFavoriteMovies.let {
             //imitate chance of failure
-            if (Random.nextInt(100) <= 80)
-            {
+            if (Random.nextInt(100) <= 80) {
                 it.value = it.value?.plus(movie) ?: listOf(movie)
                 true
-            } else
-            {
+            } else {
                 false
             }
         }
@@ -38,16 +34,13 @@ object MoviesDataSource
     /**
      * @return Boolean success or failure
      */
-    fun removeFavorite(movie: MovieEntity): Boolean
-    {
+    fun removeFavorite(movie: MovieEntity): Boolean {
         return mutableFavoriteMovies.let {
             //imitate chance of failure
-            if (Random.nextInt(100) <= 80)
-            {
+            if (Random.nextInt(100) <= 80) {
                 it.value = it.value?.minus(movie)
                 true
-            } else
-            {
+            } else {
                 false
             }
         }

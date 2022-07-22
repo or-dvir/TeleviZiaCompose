@@ -3,30 +3,19 @@ package com.hotmail.or_dvir.televiziacompose.other
 import android.app.Application
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepository
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepositoryImpl
-import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepository
-import com.hotmail.or_dvir.televiziacompose.repositories.UsersRepositoryImpl
-import com.hotmail.or_dvir.televiziacompose.ui.login.LoginViewModel
-import com.hotmail.or_dvir.televiziacompose.ui.register.RegisterViewModel
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.dsl.module
 
 @Suppress("unused")
-class MyApplication : Application()
-{
+class MyApplication : Application() {
     private val appModule = module {
-        viewModel { LoginViewModel(androidApplication()) }
-        viewModel { RegisterViewModel(androidApplication()) }
         single<MoviesRepository> { MoviesRepositoryImpl() }
-        single<UsersRepository> { UsersRepositoryImpl() }
     }
 
-    override fun onCreate()
-    {
+    override fun onCreate() {
         super.onCreate()
 
         startKoin {

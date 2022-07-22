@@ -10,18 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -62,9 +53,8 @@ fun OutlinedTextFieldWithError(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
     onTextChanged: (String) -> Unit
-)
-{
-    val showError = error.isNotBlank()
+) {
+    val showError by remember(error) { mutableStateOf(error.isNotBlank()) }
 
     Column {
         OutlinedTextField(
@@ -80,8 +70,7 @@ fun OutlinedTextFieldWithError(
             trailingIcon = trailingIcon
         )
 
-        if (showError)
-        {
+        if (showError) {
             Text(
                 modifier = Modifier.offset(16.dp, 0.dp),
                 style = MaterialTheme.typography.caption,
@@ -101,21 +90,18 @@ fun PasswordTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     @StringRes hint: Int = R.string.hint_password,
     onTextChanged: (String) -> Unit
-)
-{
+) {
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     val passwordTransformation: VisualTransformation
     @DrawableRes val passwordIconId: Int
     @StringRes val passwordContentDescriptionId: Int
 
-    if (isPasswordVisible)
-    {
+    if (isPasswordVisible) {
         passwordIconId = R.drawable.ic_visibility_off
         passwordContentDescriptionId = R.string.contentDescription_hidePassword
         passwordTransformation = VisualTransformation.None
-    } else
-    {
+    } else {
         //password is hidden
         passwordIconId = R.drawable.ic_visibility_on
         passwordContentDescriptionId = R.string.contentDescription_showPassword

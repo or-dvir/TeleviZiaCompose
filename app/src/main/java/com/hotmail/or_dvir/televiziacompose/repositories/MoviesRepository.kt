@@ -3,10 +3,10 @@ package com.hotmail.or_dvir.televiziacompose.repositories
 import androidx.lifecycle.LiveData
 import com.hotmail.or_dvir.database.movies.MovieEntity
 import com.hotmail.or_dvir.televiziacompose.models.Movie
-import java.util.UUID
+import java.util.*
 
-interface MoviesRepository
-{
+//todo shouldn't this be in the database module?
+interface MoviesRepository {
     suspend fun getAllMovies(): List<Movie>
 
     //returning a database entity here because the database is not familiar with app models...

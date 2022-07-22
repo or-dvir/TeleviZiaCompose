@@ -7,38 +7,38 @@ import com.hotmail.or_dvir.televiziacompose.models.Movie
 import com.hotmail.or_dvir.televiziacompose.models.toMovie
 import com.hotmail.or_dvir.televiziacompose.models.toMovieEntity
 import com.hotmail.or_dvir.televiziacompose.models.toMovies
+import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.util.UUID
 
-class MoviesRepositoryImpl : MoviesRepository
-{
+class MoviesRepositoryImpl : MoviesRepository {
+
+
+    //todo add function to run coroutine without terminating it (using application context)
+    // see project Aris List for example
+
     private val ioDispatcher = Dispatchers.IO
 
-    private suspend fun pretendToLoad()
-    {
+    private suspend fun pretendToLoad() {
         delay(3000)
     }
 
-    override suspend fun getAllMovies(): List<Movie>
-    {
+    override suspend fun getAllMovies(): List<Movie> {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.allMovies.toMovies()
         }
     }
 
-    override suspend fun getFavoriteMovies(): LiveData<List<MovieEntity>>
-    {
+    override suspend fun getFavoriteMovies(): LiveData<List<MovieEntity>> {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.favoriteMovies
         }
     }
 
-    override suspend fun search(searchQuery: String): List<Movie>
-    {
+    override suspend fun search(searchQuery: String): List<Movie> {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.allMovies.filter {
@@ -47,8 +47,7 @@ class MoviesRepositoryImpl : MoviesRepository
         }
     }
 
-    override suspend fun getMovie(movieId: UUID): Movie?
-    {
+    override suspend fun getMovie(movieId: UUID): Movie? {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.allMovies.find {
@@ -57,16 +56,14 @@ class MoviesRepositoryImpl : MoviesRepository
         }
     }
 
-    override suspend fun addFavorite(movie: Movie): Boolean
-    {
+    override suspend fun addFavorite(movie: Movie): Boolean {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.addFavorite(movie.toMovieEntity())
         }
     }
 
-    override suspend fun removeFavorite(movie: Movie): Boolean
-    {
+    override suspend fun removeFavorite(movie: Movie): Boolean {
         return withContext(ioDispatcher) {
             pretendToLoad()
             MoviesDataSource.removeFavorite(movie.toMovieEntity())

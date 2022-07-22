@@ -1,14 +1,19 @@
 package com.hotmail.or_dvir.televiziacompose.ui.main_activity
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.hotmail.or_dvir.televiziacompose.R
+import com.hotmail.or_dvir.televiziacompose.ui.favorite_movies.NavGraphs
+import com.hotmail.or_dvir.televiziacompose.ui.theme.TeleviZiaComposeTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
 
-class MainActivity : AppCompatActivity()
-{
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContent {
+            TeleviZiaComposeTheme {
+                DestinationsNavHost(navGraph = NavGraphs.root)
+            }
+        }
     }
 }
