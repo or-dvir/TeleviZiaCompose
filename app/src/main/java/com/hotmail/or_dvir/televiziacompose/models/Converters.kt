@@ -2,9 +2,20 @@ package com.hotmail.or_dvir.televiziacompose.models
 
 import com.hotmail.or_dvir.database.movies.MovieEntity
 
-fun Movie.toMovieEntity(): MovieEntity = MovieEntity(id, title, plotSummary)
-fun List<Movie>.toMovieEntities(): List<MovieEntity> =
-    map { MovieEntity(it.id, it.title, it.plotSummary) }
+fun List<Movie>.toMovieEntities(): List<MovieEntity> = map { it.toMovieEntity() }
+fun Movie.toMovieEntity() = MovieEntity(
+    id = id,
+    title = title,
+    plotSummary = plotSummary,
+    posterUrl = posterUrl,
+    year = year
+)
 
-fun MovieEntity.toMovie(): Movie = Movie(id, title, plotSummary)
-fun List<MovieEntity>.toMovies(): List<Movie> = map { Movie(it.id, it.title, it.plotSummary) }
+fun List<MovieEntity>.toMovies(): List<Movie> = map { it.toMovie() }
+fun MovieEntity.toMovie() = Movie(
+    id = id,
+    title = title,
+    plotSummary = plotSummary,
+    posterUrl = posterUrl,
+    year = year
+)

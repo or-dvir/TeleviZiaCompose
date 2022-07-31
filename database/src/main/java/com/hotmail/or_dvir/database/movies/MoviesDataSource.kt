@@ -2,15 +2,12 @@ package com.hotmail.or_dvir.database.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import java.util.UUID
 import kotlin.random.Random
 
 object MoviesDataSource {
     val allMovies = List(
         size = 100,
-        init = { index ->
-            MovieEntity(UUID.randomUUID(), "movie #$index", "very interesting plot #$index")
-        }
+        init = { MovieEntity.dummy() }
     )
 
     private val mutableFavoriteMovies = MutableLiveData<List<MovieEntity>>()
