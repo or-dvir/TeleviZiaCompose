@@ -9,19 +9,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.GridItemSpan
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
@@ -57,153 +48,6 @@ import coil.request.ImageRequest
 import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.models.Movie
 import kotlinx.coroutines.Dispatchers
-
-private val CARD_WIDTH_DP = 130
-private val CARD_HEIGHT_DP = CARD_WIDTH_DP * 1.5
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun MovieCard(
-    movie: Movie,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,//Modifier.size(CARD_WIDTH_DP.dp, CARD_HEIGHT_DP.dp),
-        elevation = 10.dp,
-        onClick = onClick
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            MoviePoster(
-//                modifier = Modifier.width(CARD_WIDTH_DP.dp),
-//                modifier = Modifier.size(
-//                    //todo test this height
-//                    width = CARD_WIDTH_DP.dp,
-//                    height = CARD_HEIGHT_DP.dp
-//                ),
-                posterUrl = movie.posterUrl
-            )
-            Column(
-                modifier = Modifier.padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = movie.title
-                )
-                Text(movie.year.toString())
-            }
-        }
-    }
-}
-
-@Composable
-private fun MoviePoster(
-    posterUrl: String,
-    //todo is this needed?
-    modifier: Modifier = Modifier
-) {
-    //if in preview mode
-    if (LocalInspectionMode.current) {
-        Image(
-            modifier = modifier.padding(top = 8.dp),
-            painter = painterResource(R.drawable.ic_error),
-            contentDescription = null
-        )
-    } else {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(posterUrl)
-                //todo how to tint the error image?
-                .error(R.drawable.ic_error)
-                .dispatcher(Dispatchers.IO)
-                .build(),
-            //todo
-            // do i need to limit the width too?
-            // test this height
-            modifier = modifier,
-            contentDescription = null
-        )
-    }
-}
-
-@Composable
-private fun getCardRowCount(): Int {
-    return when (getScreenWidthCategory()) {
-        ScreenWidthCategory.SMALL -> 3
-        ScreenWidthCategory.MEDIUM -> 5
-        ScreenWidthCategory.LARGE -> 8
-    }
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Preview(name = "adaptive", showBackground = true)
-@Composable
-private fun AdaptiveGridPreview() {
-    val imageWidth = 130
-    val imageHeight = imageWidth * 1.5
-
-    LazyVerticalGrid(
-        cells = GridCells.Adaptive(imageWidth.dp),
-        contentPadding = PaddingValues(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(15) {
-            MovieCard(
-                movie = Movie.dummy(),
-                onClick = {}
-            )
-        }
-    }
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Preview(name = "small", showBackground = true, device = Devices.NEXUS_5)
-@Preview(name = "medium", showBackground = true, device = Devices.NEXUS_7)
-@Preview(name = "large", showBackground = true, device = Devices.NEXUS_10)
-@Composable
-private fun MovieCardPreview() {
-    LazyVerticalGrid(
-
-        // todo test this size
-        cells = GridCells.Fixed(getCardRowCount()),
-        contentPadding = PaddingValues(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(
-            count = 15,
-        ) {
-            MovieCard(
-                modifier = Modifier,
-                movie = Movie.dummy(),
-                onClick = {}
-            )
-        }
-    }
-}
-
-@Composable
-fun LoadingIndicatorFullScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                //do nothing. the user should not be able to change anything while loading
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
 
 @Composable
 fun OutlinedTextFieldWithError(

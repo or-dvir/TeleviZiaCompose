@@ -1,72 +1,35 @@
 package com.hotmail.or_dvir.televiziacompose.repositories
 
-import androidx.lifecycle.LiveData
-import com.hotmail.or_dvir.database.movies.MovieEntity
-import com.hotmail.or_dvir.database.movies.MoviesDataSource
+import com.hotmail.or_dvir.televiziacompose.database.Database
+import com.hotmail.or_dvir.televiziacompose.database.toMovies
 import com.hotmail.or_dvir.televiziacompose.models.Movie
-import com.hotmail.or_dvir.televiziacompose.models.toMovie
-import com.hotmail.or_dvir.televiziacompose.models.toMovieEntity
-import com.hotmail.or_dvir.televiziacompose.models.toMovies
-import java.util.UUID
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-class MoviesRepositoryImpl : MoviesRepository {
+class MoviesRepositoryImpl(
+    private val scopeThatShouldNotBeCancelled: CoroutineScope,
+    private val dispatcher: CoroutineDispatcher
+) : MoviesRepository {
 
-
-    //todo add function to run coroutine without terminating it (using application context)
-    // see project Aris List for example
-
-    private val ioDispatcher = Dispatchers.IO
-
-    private suspend fun pretendToLoad() {
-        delay(3000)
-    }
+    private suspend fun pretendToLoad() = delay(3000)
 
     override suspend fun getAllMovies(): List<Movie> {
-        return withContext(ioDispatcher) {
+        return withContext(dispatcher) {
             pretendToLoad()
-            MoviesDataSource.allMovies.toMovies()
+            Database.allMovies.toMovies()
         }
     }
 
-    override suspend fun getFavoriteMovies(): LiveData<List<MovieEntity>> {
-        return withContext(ioDispatcher) {
-            pretendToLoad()
-            MoviesDataSource.favoriteMovies
-        }
-    }
-
-    override suspend fun search(searchQuery: String): List<Movie> {
-        return withContext(ioDispatcher) {
-            pretendToLoad()
-            MoviesDataSource.allMovies.filter {
-                it.title.contains(searchQuery, true)
-            }.toMovies()
-        }
-    }
-
-    override suspend fun getMovie(movieId: UUID): Movie? {
-        return withContext(ioDispatcher) {
-            pretendToLoad()
-            MoviesDataSource.allMovies.find {
-                it.id == movieId
-            }?.toMovie()
-        }
-    }
-
-    override suspend fun addFavorite(movie: Movie): Boolean {
-        return withContext(ioDispatcher) {
-            pretendToLoad()
-            MoviesDataSource.addFavorite(movie.toMovieEntity())
-        }
-    }
-
-    override suspend fun removeFavorite(movie: Movie): Boolean {
-        return withContext(ioDispatcher) {
-            pretendToLoad()
-            MoviesDataSource.removeFavorite(movie.toMovieEntity())
+    private suspend inline fun <T : Any> shouldNotBeCancelled(
+        crossinline operation: suspend (coroutineScope: CoroutineScope) -> T
+    ): T {
+        return withContext(dispatcher) {
+            scopeThatShouldNotBeCancelled.async {
+                operation(this)
+            }.await()
         }
     }
 }
