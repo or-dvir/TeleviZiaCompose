@@ -48,8 +48,18 @@ private fun TestTest() {
         Movie.dummy().copy(title = "bla bla bla bla"),
     )
 
+    val contentPadding = 16.dp
+    val arrangement = Arrangement.SpaceEvenly
+//    val arrangement = Arrangement.spacedBy(8.dp)
+
+    val sidePaddingDp = contentPadding / 2
+    val contentPaddingInner = contentPadding / (numColumns - 1)
+    val totalPaddingDp = sidePaddingDp + contentPaddingInner
+
+    val cellWidthDp = (screenWidthDp.dp - totalPaddingDp) / numColumns
+
     LazyColumn(
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(contentPadding)
     ) {
         items(movies.chunked(numColumns)) { line ->
             Row(
@@ -57,14 +67,14 @@ private fun TestTest() {
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min)
                     .border(1.dp, Color.Blue),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = arrangement
             ) {
                 line.forEach { movie ->
                     Cell(
                         text = movie.title,
-                        modifier = Modifier
+                        modifier = Modifier.weight(1f)
                                 //todo what about padding???
-                            .width((screenWidthDp / numColumns).dp)
+//                            .width(cellWidthDp)
                             .fillMaxHeight()
                     )
                 }

@@ -27,6 +27,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.hotmail.or_dvir.database'
 }
 
 dependencies {

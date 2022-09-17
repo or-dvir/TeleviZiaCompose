@@ -9,14 +9,18 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.GridItemSpan
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -73,7 +77,7 @@ fun MovieCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MoviePoster(
-                modifier = Modifier.width(CARD_WIDTH_DP.dp),
+//                modifier = Modifier.width(CARD_WIDTH_DP.dp),
 //                modifier = Modifier.size(
 //                    //todo test this height
 //                    width = CARD_WIDTH_DP.dp,
@@ -176,6 +180,7 @@ private fun MovieCardPreview() {
             count = 15,
         ) {
             MovieCard(
+                modifier = Modifier,
                 movie = Movie.dummy(),
                 onClick = {}
             )
