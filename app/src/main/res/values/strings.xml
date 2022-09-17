@@ -19,4 +19,6 @@
     <string name="login">Login</string>
     <string name="ok">OK</string>
     <string name="register">Register</string>
+
+    <string name="screenTitle_allMovies">All Movies</string>
 </resources>

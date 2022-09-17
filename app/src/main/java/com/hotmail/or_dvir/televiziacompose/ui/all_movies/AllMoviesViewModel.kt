@@ -1,7 +1,7 @@
 package com.hotmail.or_dvir.televiziacompose.ui.all_movies
 
 import androidx.lifecycle.ViewModel
-import com.hotmail.or_dvir.televiziacompose.models.Movie
+import com.hotmail.or_dvir.televiziacompose.models.MovieModel
 import com.hotmail.or_dvir.televiziacompose.repositories.MoviesRepository
 import com.hotmail.or_dvir.televiziacompose.ui.doInScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ class AllMoviesViewModel(
 
     private val _uiState = MutableStateFlow(
         UiState(
-            screenState = ScreenState.Loading,
+            screenState = AllMoviesScreenState.Loading,
             allMovies = emptyList()
         )
     )
@@ -25,16 +25,16 @@ class AllMoviesViewModel(
         doInScope {
             updateUiState(
                 _uiState.value.copy(
-                    screenState = ScreenState.MovieList,
+                    screenState = AllMoviesScreenState.Normal,
                     allMovies = moviesRepo.getAllMovies()
                 )
             )
         }
     }
 
-    fun handleEvent(event: UiEvent) {
+    fun onUiEvent(event: AllMoviesUiEvent) {
         when(event) {
-            is UiEvent.OnMovieClicked -> { /*todo*/ }
+            is AllMoviesUiEvent.OnMovieClicked -> { /*todo*/ }
         }
     }
 
@@ -42,15 +42,15 @@ class AllMoviesViewModel(
 }
 
 data class UiState(
-    val screenState: ScreenState,
-    val allMovies: List<Movie>
+    val screenState: AllMoviesScreenState,
+    val allMovies: List<MovieModel>
 )
 
-sealed class UiEvent {
-    data class OnMovieClicked(val id: UUID): UiEvent()
+sealed class AllMoviesUiEvent {
+    data class OnMovieClicked(val id: UUID): AllMoviesUiEvent()
 }
 
-sealed class ScreenState {
-    object Loading: ScreenState()
-    object MovieList: ScreenState()
+sealed class AllMoviesScreenState {
+    object Loading: AllMoviesScreenState()
+    object Normal: AllMoviesScreenState()
 }
