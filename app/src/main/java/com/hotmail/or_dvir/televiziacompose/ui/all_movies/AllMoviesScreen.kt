@@ -99,17 +99,18 @@ private fun MovieList(
     //note that this does NOT take into account whether there is a next page or not.
     //therefore we pass a SEPARATE parameter `isLoadingNextPage` to be handled by the view model
     //as part of the ui state.
-    val reachedBottom = remember {
+    val shouldLoadNextPage = remember {
         derivedStateOf {
             val layoutInfo = listState.layoutInfo
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
 
-            lastVisibleItemIndex == layoutInfo.lastIndex
+            //start loading when we are 3 items from the bottom
+            lastVisibleItemIndex >= layoutInfo.lastIndex - 3
         }
     }
 
-    LaunchedEffect(reachedBottom.value) {
-        snapshotFlow { reachedBottom.value }
+    LaunchedEffect(shouldLoadNextPage.value) {
+        snapshotFlow { shouldLoadNextPage.value }
             .collect {
                 if(it && hasNextPage) {
                     onEvent(AllMoviesUiEvent.LoadNextPage)
