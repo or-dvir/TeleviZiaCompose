@@ -7,3 +7,13 @@ data class MovieModel(
     val title: String,
     val plotSummary: String,
 )
+
+//todo
+//  runtime
+//  rating
+//  release year
+//  cast
+//      crew? (director, camera man etc.)
+//  poster
+//      portrait
+//      landscape
