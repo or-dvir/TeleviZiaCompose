@@ -23,6 +23,14 @@ class MoviesRepositoryImpl(
         }
     }
 
+    override suspend fun getMoviesForPage(page: Int): List<MovieModel> {
+        //the database already takes care of checking that `page` is within range
+        return withContext(dispatcher) {
+            pretendToLoad()
+            Database.getMoviesForPage(page).toMovieModels()
+        }
+    }
+
     private suspend inline fun <T : Any> shouldNotBeCancelled(
         crossinline operation: suspend (coroutineScope: CoroutineScope) -> T
     ): T {
