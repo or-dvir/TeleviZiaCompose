@@ -72,7 +72,7 @@ fun OutlinedTextFieldWithError(
 }
 
 @Composable
-fun LoadingIndicator() {
+fun LoadingIndicatorFullScreen() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()

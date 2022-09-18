@@ -1,15 +1,17 @@
 package com.hotmail.or_dvir.televiziacompose.ui.all_movies
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -17,7 +19,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,8 +34,13 @@ import com.hotmail.or_dvir.televiziacompose.R
 import com.hotmail.or_dvir.televiziacompose.database.Database
 import com.hotmail.or_dvir.televiziacompose.database.toMovieModels
 import com.hotmail.or_dvir.televiziacompose.models.MovieModel
-import com.hotmail.or_dvir.televiziacompose.ui.shared.LoadingIndicator
+import com.hotmail.or_dvir.televiziacompose.ui.all_movies.AllMoviesScreenState.Loading
+import com.hotmail.or_dvir.televiziacompose.ui.all_movies.AllMoviesScreenState.LoadingNextPage
+import com.hotmail.or_dvir.televiziacompose.ui.all_movies.AllMoviesScreenState.Normal
+import com.hotmail.or_dvir.televiziacompose.ui.lastIndex
+import com.hotmail.or_dvir.televiziacompose.ui.shared.LoadingIndicatorFullScreen
 import com.ramcosta.composedestinations.annotation.Destination
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import java.util.UUID
 
@@ -53,28 +65,58 @@ fun AllMoviesScreen() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it)) {
-                when(uiState.screenState) {
-                    AllMoviesScreenState.Loading -> LoadingIndicator()
-                    AllMoviesScreenState.Normal -> MovieList(
-                        movies = uiState.allMovies,
-                        onEvent = vm::onUiEvent
+                when(val screenState = uiState.screenState) {
+                    Loading -> LoadingIndicatorFullScreen()
+                    Normal,
+                    LoadingNextPage -> MovieList(
+                        movies = uiState.moviesToDisplay,
+                        onEvent = vm::onUiEvent,
+                        isLoadingNextPage = screenState is LoadingNextPage
                     )
                 }
             }
         }
     )
 
-    stopped here
+//    stopped here
     //todo
     //  paging (endless scroll???)
+    //  indicate of next page is loading
+    //  if we are on the last page, stop trying to load...
 }
 
 @Composable
 private fun MovieList(
     movies: List<MovieModel>,
-    onEvent: AllMoviesEvent
+    onEvent: AllMoviesEvent,
+    isLoadingNextPage: Boolean
 ) {
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
+    //note that this does NOT take into account whether there is a next page or not.
+    //therefore we pass a SEPARATE parameter `isLoadingNextPage` to be handled by the view model
+    //as part of the ui state.
+    val reachedBottom = remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index
+
+            lastVisibleItemIndex == layoutInfo.lastIndex
+        }
+    }
+
+    LaunchedEffect(reachedBottom.value) {
+        snapshotFlow { reachedBottom.value }
+            .collect {
+                if(it) {
+                    onEvent(AllMoviesUiEvent.LoadNextPage)
+                }
+            }
+    }
+
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize()
     ) {
         itemsIndexed(movies) { index, it ->
@@ -85,6 +127,19 @@ private fun MovieList(
 
             if(index != movies.lastIndex) {
                 Divider()
+            }
+        }
+
+        if(isLoadingNextPage) {
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
@@ -154,6 +209,7 @@ private fun LongMoviePreview() {
 private fun AllMoviesPreview() {
     MovieList(
         movies = Database.allMovies.toMovieModels(),
-        onEvent = { }
+        onEvent = { },
+        isLoadingNextPage = false
     )
 }

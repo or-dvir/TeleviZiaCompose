@@ -31,6 +31,13 @@ class MoviesRepositoryImpl(
         }
     }
 
+    override suspend fun getNumPages(): Int {
+        return withContext(dispatcher) {
+            pretendToLoad()
+            Database.numPages
+        }
+    }
+
     private suspend inline fun <T : Any> shouldNotBeCancelled(
         crossinline operation: suspend (coroutineScope: CoroutineScope) -> T
     ): T {

@@ -6,12 +6,12 @@ import java.util.UUID
 import kotlin.random.Random
 object Database {
     private const val ITEMS_PER_PAGE = 25
-    private val numPages get() = allMovies.size / ITEMS_PER_PAGE
+    val numPages get() = allMovies.size / ITEMS_PER_PAGE
 
     val allMovies = MutableList(100) {
         MovieEntity(
             id = UUID.randomUUID(),
-            title = randomTitle(),
+            title = "$it. ${randomTitle()}",
             plotSummary = randomPlot()
         )
     }

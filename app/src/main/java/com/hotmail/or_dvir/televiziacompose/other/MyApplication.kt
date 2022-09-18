@@ -12,10 +12,7 @@ import org.koin.core.logger.Level
 
 @Suppress("unused")
 class MyApplication : Application() {
-
-    companion object {
-        private const val TAG = "MyApplication"
-    }
+    private val TAG = MyApplication::class.java.simpleName
 
     private val exceptionHandler = CoroutineExceptionHandler { context, t ->
         Log.d(TAG, "a non-cancellable coroutine with context \"$context\" failed.\n${t.message}")
