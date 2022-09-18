@@ -71,7 +71,8 @@ fun AllMoviesScreen() {
                     LoadingNextPage -> MovieList(
                         movies = uiState.moviesToDisplay,
                         onEvent = vm::onUiEvent,
-                        isLoadingNextPage = screenState is LoadingNextPage
+                        isLoadingNextPage = screenState is LoadingNextPage,
+                        hasNextPage = uiState.hasNextPage
                     )
                 }
             }
@@ -89,7 +90,8 @@ fun AllMoviesScreen() {
 private fun MovieList(
     movies: List<MovieModel>,
     onEvent: AllMoviesEvent,
-    isLoadingNextPage: Boolean
+    isLoadingNextPage: Boolean,
+    hasNextPage: Boolean
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -109,7 +111,7 @@ private fun MovieList(
     LaunchedEffect(reachedBottom.value) {
         snapshotFlow { reachedBottom.value }
             .collect {
-                if(it) {
+                if(it && hasNextPage) {
                     onEvent(AllMoviesUiEvent.LoadNextPage)
                 }
             }
@@ -141,6 +143,8 @@ private fun MovieList(
                     CircularProgressIndicator()
                 }
             }
+
+            scope.launch { listState.animateScrollToItem(listState.lastIndex) }
         }
     }
 }
@@ -210,6 +214,7 @@ private fun AllMoviesPreview() {
     MovieList(
         movies = Database.allMovies.toMovieModels(),
         onEvent = { },
-        isLoadingNextPage = false
+        isLoadingNextPage = false,
+        hasNextPage = false
     )
 }
