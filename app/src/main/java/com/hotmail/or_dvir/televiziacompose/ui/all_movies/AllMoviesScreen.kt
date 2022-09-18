@@ -23,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -78,12 +77,6 @@ fun AllMoviesScreen() {
             }
         }
     )
-
-//    stopped here
-    //todo
-    //  paging (endless scroll???)
-    //  indicate of next page is loading
-    //  if we are on the last page, stop trying to load...
 }
 
 @Composable
@@ -93,7 +86,10 @@ private fun MovieList(
     isLoadingNextPage: Boolean,
     hasNextPage: Boolean
 ) {
-    val scope = rememberCoroutineScope()
+    //todo this list is "endless scroll", where the entire list is kept in memory.
+    // so if there are A LOT of movies (from real API would be thousands/tens of thousands!!!),
+    // we could run into "out of memory"
+
     val listState = rememberLazyListState()
 
     //note that this does NOT take into account whether there is a next page or not.
@@ -144,8 +140,12 @@ private fun MovieList(
                     CircularProgressIndicator()
                 }
             }
+        }
+    }
 
-            scope.launch { listState.animateScrollToItem(listState.lastIndex) }
+    LaunchedEffect(key1 = isLoadingNextPage) {
+        if(isLoadingNextPage) {
+            launch { listState.animateScrollToItem(listState.lastIndex) }
         }
     }
 }
